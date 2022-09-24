@@ -3,6 +3,33 @@ import { useEffect } from 'react'
 const axios = require('axios');
 
 function TotalData() {
+
+    var gapi = window.gapi
+    var CLIENT_ID = "291033616043-2c9uuvdi2181kas4pbbgkgfp867ne3fp.apps.googleusercontent.com"
+    var API_KEY ="AIzaSyBI75x58ddcclv3c5RENRzrD3J9MYSOCIE"
+    var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"]
+    var SCOPES = "https://www.googleapis.com/auth/calendar.events"
+
+  function handlee(){
+    gapi.load('client:auth2',()=>{
+        gapi.client.init({
+            apiKey: API_KEY,
+            discoveryDocs: [DISCOVERY_DOCS],
+            scope : SCOPES,
+            clientid : CLIENT_ID
+          })
+           gapi.client.load('calendar','v3',()=> console.log("yes"))
+           gapi.auth2.getAuthInstance().signIn()
+           .then(()=>{
+           })
+
+
+    })
+    
+   
+
+  }
+
 const [Data, setData] = useState([]);
 useEffect(() => {
     axios.get('https://www.kontests.net/api/v1/all')
@@ -34,7 +61,7 @@ useEffect(() => {
                         <div className="in24">In 24 hours : {contest.in_24_hours}</div>
                         <div className="cardButtons">
                             <a className='cardButton' href={contest.url} target="_blank"><span>Go To Contest</span></a>
-                            <a className='cardButton' href="#" target="_blank"><span>Add to calender</span></a>
+                            <a className='cardButton' target="_blank" onClick={handlee}>Add to calender</a>
                         </div>
                        
                     </div>
